@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#101914" />
+  <meta name="description" content="A WhatsApp-style daily DSA practice bot MVP with problem discovery and progress tracking." />
+  <title>DSA Buddy — Daily practice, one problem at a time</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="DSA Buddy home">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span>DSA<span class="brand-light">Buddy</span><small>YOUR DAILY CP PARTNER</small></span>
+      </a>
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav class="nav-list">
+        <button class="nav-item active" data-view="chat"><span class="nav-icon">◉</span> Bot chat <span class="nav-dot"></span></button>
+        <button class="nav-item" data-view="problems"><span class="nav-icon">▤</span> Problem library</button>
+        <button class="nav-item" data-view="progress"><span class="nav-icon">↗</span> My progress</button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <section class="streak-mini">
+        <div class="streak-top"><span>✦ YOUR STREAK</span><span class="flame">♨</span></div>
+        <div class="streak-number"><strong id="sidebar-streak">0</strong><span>days</span></div>
+        <p>One problem today is a win.</p>
+        <div class="week-dots" id="week-dots" aria-label="This week's activity"></div>
+      </section>
+      <div class="sidebar-footer"><span class="status-pulse"></span> Prototype mode <span class="version">v0.1</span></div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark"><span></span><span></span><span></span></span> DSA Buddy</div>
+        <div class="breadcrumb"><span>Workspace</span><span class="crumb-slash">/</span><strong id="page-heading">Bot chat</strong></div>
+        <div class="topbar-right"><span class="local-tag"><span class="status-pulse"></span> LOCAL DEMO</span><button id="reset-demo" class="icon-button" title="Reset demo progress" aria-label="Reset demo progress">↻</button><div class="avatar">AS</div></div>
+      </header>
+
+      <section class="chat-view" id="chat-view">
+        <div class="chat-heading">
+          <div class="bot-id"><div class="bot-avatar"><span>⌘</span><i></i></div><div><h1>DSA Buddy <span class="verified">✓</span></h1><p><span class="status-pulse"></span> Your personal DSA practice bot</p></div></div>
+          <button class="outline-button" id="show-library">▤ <span>Explore problems</span></button>
+        </div>
+        <div class="chat-canvas" id="chat-canvas">
+          <div class="date-divider"><span>YOUR PRACTICE SPACE</span></div>
+          <div class="welcome-row"><div class="bot-avatar small">⌘</div><div class="message bot-message"><div class="message-author">DSA Buddy <span>BOT</span></div><p>Hey! 👋 Ready to get a little better at DSA today?</p><p>I’ll bring you one focused problem, help you find a hint, and keep track of your progress. No pressure — consistency beats cramming.</p><span class="message-time">Just now</span></div></div>
+          <div id="daily-message"></div>
+          <div class="quick-replies" id="quick-replies"><span>QUICK ACTIONS</span><button data-command="topics">Browse topics <span>↗</span></button><button data-command="progress">My progress <span>↗</span></button><button data-command="help">Commands <span>↗</span></button></div>
+        </div>
+        <div class="composer-wrap">
+          <div class="composer-hints"><span>TRY</span><button data-fill="daily">daily</button><button data-fill="random">random</button><button data-fill="topics">topics</button><button data-fill="progress">progress</button></div>
+          <form class="composer" id="chat-form"><button type="button" class="composer-plus" id="composer-help" aria-label="Show bot commands">＋</button><input id="chat-input" type="text" autocomplete="off" placeholder="Message DSA Buddy… try ‘daily’ or ‘search arrays’" aria-label="Message DSA Buddy"/><button class="send-button" type="submit" aria-label="Send message">↑</button></form>
+          <p class="demo-note">This is a browser prototype. Real WhatsApp delivery is part of the next phase.</p>
+        </div>
+      </section>
+
+      <section class="content-view hidden" id="problems-view">
+        <div class="page-title-row"><div><div class="eyebrow">BUILD YOUR FUNDAMENTALS</div><h1>Problem library<span class="period">.</span></h1><p>Small, curated set for daily practice. Pick a problem and get moving.</p></div><div class="stat-chip"><strong id="library-count">8</strong><span>STARTER PROBLEMS</span></div></div>
+        <div class="filters"><label class="search-box"><span>⌕</span><input type="search" id="problem-search" placeholder="Search problems, topics…" aria-label="Search problems"/><kbd>/</kbd></label><select id="topic-filter" aria-label="Filter by topic"><option value="all">All topics</option></select><select id="difficulty-filter" aria-label="Filter by difficulty"><option value="all">All difficulties</option><option>Easy</option><option>Medium</option><option>Hard</option></select></div>
+        <div id="problem-grid" class="problem-grid"></div>
+        <div id="empty-state" class="empty-state hidden"><span>⌕</span><h3>No problems found</h3><p>Try a different title or topic.</p></div>
+      </section>
+
+      <section class="content-view hidden" id="progress-view">
+        <div class="page-title-row"><div><div class="eyebrow">SMALL STEPS, REAL MOMENTUM</div><h1>Your progress<span class="period">.</span></h1><p>Progress is saved in this browser on this device.</p></div><div class="stat-chip"><strong>LOCAL</strong><span>STORAGE</span></div></div>
+        <div class="progress-stats"><article class="progress-card"><span class="card-icon green">✓</span><span class="stat-label">PROBLEMS SOLVED</span><strong id="progress-solved">0</strong><small>out of <span id="progress-total">8</span> starter problems</small></article><article class="progress-card"><span class="card-icon orange">♨</span><span class="stat-label">CURRENT STREAK</span><strong><span id="progress-streak">0</span><small class="inline-small"> days</small></strong><small>Based on your recorded solve dates</small></article><article class="progress-card"><span class="card-icon purple">◷</span><span class="stat-label">TOPIC COVERAGE</span><strong id="progress-topics">0<span class="inline-small"> / 8</span></strong><small>Topics with at least one solve</small></article></div>
+        <div class="section-panel"><div class="section-panel-head"><div><h2>Recent activity</h2><p>Your latest marked-solved problems</p></div><button class="text-button" id="progress-to-library">Browse library ↗</button></div><div id="activity-list" class="activity-list"></div></div>
+        <div class="progress-footnote">This MVP tracks a simple local progress snapshot. Accounts, cross-device history, reminders, and WhatsApp message sync are not connected yet.</div>
+      </section>
+
+      <footer class="main-footer"><span>MADE FOR THE DAILY GRIND <b>·</b> DSA BUDDY MVP</span><span>Problem links are external <span class="footer-heart">♥</span></span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="data/problems.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
