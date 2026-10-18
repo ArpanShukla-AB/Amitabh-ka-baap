@@ -126,6 +126,13 @@ The commands are simulated in the web UI. They do not send or receive real Whats
 - Reminder opt-out rate and delivery failures.
 - Learner feedback on problem difficulty and hint usefulness.
 
+## Planning docs
+
+- [Goals](docs/GOALS.md) — where the project stands and the five goals toward the WhatsApp pilot
+- [Backend proposal](docs/BACKEND_PROPOSAL.md) — architecture, stack options, data model, API and feature ideas
+- [Audit](docs/AUDIT.md) — 25 known problems in the current prototype, with file and line references
+- [Proposed issues](docs/ISSUES.md) — 15 ordered issues with acceptance criteria
+
 ## Repository layout
 
 ```text
@@ -135,6 +142,11 @@ The commands are simulated in the web UI. They do not send or receive real Whats
 ├── app.js              # interactions, commands, filters, local progress
 ├── data/
 │   └── problems.js     # starter problems and optional videoUrl fields
+├── docs/
+│   ├── GOALS.md            # project goals
+│   ├── BACKEND_PROPOSAL.md # backend architecture and API plan
+│   ├── AUDIT.md            # known issues in the prototype
+│   └── ISSUES.md           # proposed GitHub issues
 └── README.md           # setup, roadmap, and product ideas
 ```
 
